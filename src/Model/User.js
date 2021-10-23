@@ -1,25 +1,27 @@
-const { Model, DataTypes } = require("sequelize");
-
-class User extends Model {
-  static init(sequelize) {
-    super.init(
-      {
-        name: {
-          type: DataTypes.TEXT,
-        },
-        email: {
-          type: DataTypes.TEXT,
-        },
-        password: {
-          type: DataTypes.TEXT,
-        },
-      },
-      {
-        sequelize,
-        tableName: "user",
-      }
-    );
-  }
+const user = (sequelize, DataTypes) =>{
+  const User = sequelize.define('User',{
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      allowNull: false,
+      primaryKey: true
+    },
+    name:{
+      type: DataTypes.STRING,
+      allowNull:false,
+    },
+    email:{
+      type: DataTypes.STRING,
+      allowNull:false,
+    },
+    password:{
+      type: DataTypes.STRING,
+      allowNull:false,
+    }
+  },{
+    tableName: 'users'
+  });
+  return User;
 }
 
-module.exports = { User };
+module.exports = user;
