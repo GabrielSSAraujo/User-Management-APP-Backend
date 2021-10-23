@@ -1,10 +1,56 @@
 version: "3.8"
 
 services:
+  banco:
+    image: postgres
+    container_name: user_controller_banco
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: user1234
+      POSTGRES_USER: postgres_user
+      POSTGRES_DB: postgres_user
+      DATABASE_HOST: postgres_user_controller
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - user-controller-network
+
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    container_name: user_controller_pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: usercontroler@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: user_controler123
+    depends_on:
+      - banco
+    ports:
+      - "5050:80"
+    networks:
+      - user-controller-network
+    links:
+      - banco:postgres_user_controller
+
   app:
+    container_name: user_controller_app
     build: .
-    command: npm start
+    restart: always
+    depends_on:
+      - banco
+    networks:
+      - user-controller-network
+    links:
+      - banco:postgres_user_controller
     ports:
       - "8000:8000"
-    volumes:
-      - .:/usr/src/app
+
+volumes:
+  node_modules:
+  pgdata:
+
+networks:
+  user-controller-network:
+    name: user-controller-network
+    driver: bridge
