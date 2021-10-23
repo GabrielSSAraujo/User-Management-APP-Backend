@@ -1,20 +1,18 @@
-const User = require("../Model/User");
+const { user } = require("../Model");
 
-function teste(req, res) {
-  return res.send("Testing nodemoon");
-}
-
-async function cadastroUser(req, res) {
+async function createUser(req, res) {
   try {
-    const { user } = req.body;
-    const response = await User.create(user);
-    console.log(response);
-    return response;
+    const {name, email, password} = req.body;
+    console.log(req.body);
+    const addUser = await user.create(req.body);
+    console.log(addUser);
+    return res.status(200).json(addUser);
+
   } catch (error) {
     console.log(error);
+    return res.status(500);
   }
 }
 module.exports = {
-  teste,
-  cadastroUser,
+  createUser,
 };
