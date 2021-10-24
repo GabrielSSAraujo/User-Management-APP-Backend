@@ -13,10 +13,15 @@ const user = (sequelize, DataTypes) =>{
     email:{
       type: DataTypes.STRING,
       allowNull:false,
+      primaryKey:true,
     },
     password:{
       type: DataTypes.STRING,
       allowNull:false,
+    },
+    level:{
+      type: DataTypes.INTEGER,
+      allowNull:false
     }
   },{
     tableName: 'users'
