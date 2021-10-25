@@ -1,5 +1,4 @@
 const { user } = require("../Model");
-const Users = require("../Model/User")
 const jwt = require('../Auth/jwt');
 const bcrypt = require("bcrypt");
 const privilegeUsers = {
@@ -65,14 +64,33 @@ async function userLogin(req, res){
 }
 
 async function getInfoUser(req,res){
-  console.log(req.decoded.User);
     const id =  Number.parseInt(req.decoded.User,10);
+
     try{
       const userInfo = await user.findOne( {where: { id: id }});
-    console.log(userInfo);
+
     return res.status(200).json({userInfo});
+
   }catch(error){
     return res.status(500).json({message: "Erro ao buscar usuário"});
+  }
+}
+
+async function listAllUsers(req,res){
+
+  try{
+    const userLevel = await findUserLevel(req);
+
+    if(userLevel!=privilegeUsers.admin){
+      return res.status(401).json({message: "Usuário nao possui permissão de administrador"});
+    }
+
+    const users = await user.findAll();
+    console.log(users);
+    return res.status(200).json(users);
+
+  }catch(error){
+    return res.status(500).json({message: "Erro ao buscar usuários"});
   }
 }
 
@@ -80,4 +98,5 @@ module.exports = {
   createUser,
   userLogin,
   getInfoUser,
+  listAllUsers,
 };
