@@ -1,4 +1,5 @@
 const { user } = require("../Model");
+const Users = require("../Model/User")
 const jwt = require('../Auth/jwt');
 const bcrypt = require("bcrypt");
 const privilegeUsers = {
@@ -7,8 +8,9 @@ const privilegeUsers = {
 };
 
 
-async function findUserLevel(req, res){
-  const User = await user.findByPk(req.decoded.User);
+async function findUserLevel(req){
+  const id = Number.parseInt(req.decoded.User,10);
+  const User = await user.findByPk(id);
   return User.level;
 }
 
@@ -62,8 +64,20 @@ async function userLogin(req, res){
   }
 }
 
+async function getInfoUser(req,res){
+  console.log(req.decoded.User);
+    const id =  Number.parseInt(req.decoded.User,10);
+    try{
+      const userInfo = await user.findOne( {where: { id: id }});
+    console.log(userInfo);
+    return res.status(200).json({userInfo});
+  }catch(error){
+    return res.status(500).json({message: "Erro ao buscar usuário"});
+  }
+}
 
 module.exports = {
   createUser,
   userLogin,
+  getInfoUser,
 };
