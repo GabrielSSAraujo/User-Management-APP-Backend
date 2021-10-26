@@ -1,26 +1,7 @@
-const express = require("express");
-const routes = require("./routes");
-const { sequelize } = require('./Model/index');
-const cors = require("cors");
+const app = require("./server");
 
-const app = express();
-
-const port = 8000;
-
-app.use(cors());
-app.use(express.json());
-app.use(routes);
-
-//faz coneção com o banco;
-
-sequelize.sync().then(
-  () => {
-    console.log(`conectado ao banco de dados com sucesso`);
-  }
-);
-
-app.listen(port, () => {
-  console.log(`Exemplo da aplicação em http://localhost:${port}`);
+app.listen(8000, () => {
+  console.log(`Exemplo da aplicação em http://localhost:8000`);
 });
 
 module.exports = app;

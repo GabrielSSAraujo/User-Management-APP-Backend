@@ -1,4 +1,4 @@
-const { user } = require("../Model");
+const { User } = require("../app/models/");
 const jwt = require('../Auth/jwt');
 const bcrypt = require("bcrypt");
 const privilegeUsers = {
@@ -8,9 +8,10 @@ const privilegeUsers = {
 
 
 async function findUserLevel(req){
-  const id = Number.parseInt(req.decoded.User,10);
-  const User = await user.findByPk(id);
-  return User.level;
+  console.log(req.decoded);
+  const id = Number.parseInt(req.decoded.user,10);
+  const user = await User.findByPk(id);
+  return user.level;
 }
 
 async function hashPassword(pass, saltRounds = 10) {
@@ -22,13 +23,14 @@ async function hashPassword(pass, saltRounds = 10) {
 async function createUser(req, res) {
   try {
     const {name, email, password, level} = req.body;
+    console.log(req.body);
     const requesterLevel = await findUserLevel(req);
-
+    console.log(requesterLevel);
     if(requesterLevel != privilegeUsers.admin){
       return res.status(401).json({message: "Usuário sem permissão de admin"})
     }
     
-    const addUser = await user.create({
+    const addUser = await User.create({
       name: name,
       email: email,
       password: await hashPassword(password),
@@ -50,24 +52,25 @@ async function userLogin(req, res){
   console.log(email, password);
 
   try{
-    const User = await user.findOne( {where: { email: email }});
+    const user = await User.findOne( {where: { email: email }});
 
-    if (User && (await bcrypt.compare(password, User.password))) {
+    if (user && (await bcrypt.compare(password, user.password))) {
 
-      const token = jwt.sign({User: User.id});
-      return res.status(200).json({User,token});
+      const token = jwt.sign({user: user.id});
+      return res.status(200).json({user,token});
     }
-    return res.status(200).json({User,token});
+    return res.status(200).json({user,token});
   }catch(error){
+    console.log(error);
     return res.status(401).json({message: "Não foi possivel realizar o login"})
   }
 }
 
 async function getInfoUser(req,res){
-    const id =  Number.parseInt(req.decoded.User,10);
+    const id =  Number.parseInt(req.decoded.user,10);
 
     try{
-      const userInfo = await user.findOne( {where: { id: id }});
+      const userInfo = await User.findOne( {where: { id: id }});
 
     return res.status(200).json({userInfo});
 
@@ -85,7 +88,7 @@ async function listAllUsers(req,res){
       return res.status(401).json({message: "Usuário nao possui permissão de administrador"});
     }
 
-    const users = await user.findAll();
+    const users = await User.findAll();
     console.log(users);
     return res.status(200).json(users);
 

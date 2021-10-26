@@ -1,6 +1,6 @@
-const {sequelize } = require('./Model/index');
+const {sequelize } = require('./app/models');
 const bcrypt = require("bcrypt");
-const {user} = require('./Model')
+const {User} = require('./app/models')
 
 async function hashPassword(pass, saltRounds = 10) {
 	const salt = await bcrypt.genSalt(saltRounds);
@@ -8,9 +8,9 @@ async function hashPassword(pass, saltRounds = 10) {
 }
 
 const adminUser = {
-  name: "admin",
-  email: "admin@admin.com",
-  password: "admin",
+  name: "admdin",
+  email: "admian@admin.com",
+  password: "addmin",
   level: 1
 };
 
@@ -33,7 +33,7 @@ async function createAdmin() {
   console.log("connected to database");
 
   try {
-    const newAdmin = await user.create({
+    const newAdmin = await User.create({
       name: adminUser.name,
       email: adminUser.email,
       password: await hashPassword(adminUser.password),
