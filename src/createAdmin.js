@@ -8,9 +8,9 @@ async function hashPassword(pass, saltRounds = 10) {
 }
 
 const adminUser = {
-  name: "admdin",
-  email: "admian@admin.com",
-  password: "addmin",
+  name: "admin",
+  email: "admin@admin.com",
+  password: "admin",
   level: 1
 };
 
