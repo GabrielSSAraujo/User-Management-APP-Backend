@@ -13,10 +13,6 @@ app.use(routes);
 
 //faz coneção com o banco;
 
-sequelize.sync().then(
-  () => {
-    console.log(`conectado ao banco de dados com sucesso`);
-  }
-);
+sequelize.sync();
 
 module.exports = app;

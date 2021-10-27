@@ -49,7 +49,8 @@ async function userLogin(req, res){
   //passando dados para login via header
   const [, hash] = req.headers.authorization.split(' ');
   const [email, password] = Buffer.from(hash, 'base64').toString().split(':');
-  console.log(email, password);
+  console.log(email);
+  console.log(password);
 
   try{
     const user = await User.findOne( {where: { email: email }});
@@ -57,12 +58,12 @@ async function userLogin(req, res){
     if (user && (await bcrypt.compare(password, user.password))) {
 
       const token = jwt.sign({user: user.id});
+      console.log(token);
       return res.status(200).json({user,token});
     }
-    return res.status(200).json({user,token});
   }catch(error){
     console.log(error);
-    return res.status(401).json({message: "Não foi possivel realizar o login"})
+    return res.status(401).send();
   }
 }
 

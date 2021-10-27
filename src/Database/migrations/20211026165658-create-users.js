@@ -7,7 +7,6 @@ module.exports = {
       id:{
         type: Sequelize.INTEGER,
         primaryKey:true,
-        autoIncrement:true,
         allowNull:false,
 
       },
@@ -17,9 +16,8 @@ module.exports = {
       }, 
       email:{
         type: Sequelize.STRING,
-        primaryKey:true,
         allowNull:false,
-        unique: true,
+        
 
       },
       password:{
@@ -32,11 +30,11 @@ module.exports = {
         allowNull:false,
 
       } ,
-      created_at:{
+      createdAt:{
         type: Sequelize.DATE,
         allowNull:false,
       },
-      updated_at:{
+      updatedAt:{
         type: Sequelize.DATE,
         allowNull:false,
       }
