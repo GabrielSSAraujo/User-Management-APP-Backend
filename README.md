@@ -4,11 +4,6 @@
 
 Esse repositório contém uma API que faz parte do projeto User Controller, que objetiva realizar o controle de usuarios.
 
-O sistema busca identificar o tipo de usuário que está utilizando, entre administrador e usuário comum.
-
-Para o usuário administrador, é possível visualizar as informações: nome, e-mail e nível de acesso de todos os usuários. Além disso, cadastrar um usuário contendo as informações mencionadas e senha para login.
-
-Já para o usuário não administrador, é possível visualizar essas informações, porém, não é possível realizar o cadastro.
 
 ## Como rodar?
 
