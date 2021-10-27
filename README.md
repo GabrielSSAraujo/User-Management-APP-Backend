@@ -37,7 +37,7 @@ docker-compose up -d --build
 npm install
 docker exec -it user_controller_app /bin/bash
 npx sequelize db:migrate
--corrigir
+npx jest
 ```
 
 ## Rotas
